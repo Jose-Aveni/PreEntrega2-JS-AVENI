@@ -33,41 +33,67 @@ let eleccion = prompt(
  O bien, ingrese "Salir" para finalizar`
 );
 
+// Contador para el importe final
 let precioFinal = 0;
 
 
 function reIngreso() {
 
     if (eleccion !== "Salir") {
-        eleccion = prompt(
-            `Usted a ingresado ${eleccion}
-
- ¿Desea agregar otro producto?
- 
- Lista de productos y precios:    
-  1. Torta
-  2. Tarta
-  3. Alfajor
-  4. Porcion
- 
- O bien, ingrese "Salir" para finalizar`
+        eleccion = prompt(`  Usted a ingresado ${eleccion}
+  
+  ¿Desea agregar otro producto?
+    
+    Lista de productos y precios:    
+    1. Torta
+    2. Tarta
+    3. Alfajor
+    4. Porcion
+    
+    O bien, ingrese "Salir" para finalizar`
         );
         comprobarIngreso();
-    }
-    else {
-        alert(`Este es el importe final de tus productos seleccionados: $${precioFinal}
- Gracias por su visita`);
     }
 }
 
 comprobarIngreso();
 
 function comprobarIngreso() {
+
     eleccion = eleccion.charAt(0).toUpperCase() + eleccion.slice(1).toLowerCase().trimEnd();
-    arrayCompra.forEach((e) => {
-        if (e.nombre === eleccion) {
-            precioFinal += e.precioConIVA;
+
+    // Verificar si la elección del usuario coincide con algún producto
+    const resultado = arrayCompra.find((producto) => producto.nombre === eleccion);
+
+    if (eleccion === "Salir") {
+        if (precioFinal > 0) {
+            alert(`Este es el importe final de tus productos seleccionados: $${precioFinal}
+ Gracias por su visita`);
         }
-    });
-    reIngreso();
+        else {
+            alert("Gracias por su visita");
+        }
+    }
+
+    // Si se encuentra una coincidencia: sumar al precioFinal y volver a reIngreso
+    else if (resultado) {
+        precioFinal += resultado.precioConIVA;
+        reIngreso();
+    }
+
+    // Si no hay coincidencia: mensaje de opción incorrecta, volver a pedir entrada y comprobar
+    else {
+        eleccion = prompt(` Opción incorrecta
+
+  ¿Qué producto desea? Elegir por el nombre:
+    1. Torta
+    2. Tarta
+    3. Alfajor
+    4. Porcion
+             
+    O bien, ingrese "Salir" para finalizar`
+        );
+
+        comprobarIngreso();
+    }
 }
